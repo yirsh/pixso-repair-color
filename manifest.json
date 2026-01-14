@@ -1,0 +1,7 @@
+{
+  "id": "yir-repair",
+  "name": "Color Repair Tool",
+  "ui": "dist/ui.html",
+  "main": "dist/main.js",
+  "permissions": ["teamlibrary"]
+}

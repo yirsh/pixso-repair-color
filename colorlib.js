@@ -1,0 +1,23 @@
+export const colorLib = [
+    {name: "layout/background", hex: "00FFFF", id0: "81dd3d13158492f79cc17d5ab8e0ac6b71a230af", id1: "87726a9eccf5aa4932501056818d37c492fd4392"},
+    {name: "layout/lowest", hex: "00FFF5", id0: "5f422605979870fd5a79d26499ee64cb1c5f23a3", id1: "fb7f703ab8ed0658e7df37ee6d24112dd06c5939"},
+    {name: "layout/low", hex: "00FFEB", id0: "671b31ffe44da6ef2a59156eb156eab367292752", id1: "fed55c588c6ea9958e8596e3bc6740b24b98eb8e"},
+    {name: "layout/main", hex: "00FFE1", id0: "f59c5360278f74db0aef803e13efc13b326305ee", id1: "1362407155fe310b23d76288e0aee0bede99b6b5"},
+    {name: "layout/high", hex: "00FFD7", id0: "73e365674d17c64aad45e55c77475d9c28a34e7e", id1: "7e96cda12c56a1136ee4a0438523b888c4bf3a10"},
+    {name: "layout/highest", hex: "00FFCD", id0: "e1fc0533484fe7f4d2fc5bba277345db093f347c", id1: "4c4c337f6f13fbb18b8668e0a79e291fb7c3f850"},
+    {name: "layout/stroke", hex: "00FFC3", id0: "e2776edfd40cd9121d980b4e79191125daa0a0f3", id1: "e55323721041192da7bfda1519be7fa4018ba023"},
+    {name: "active/active", hex: "00FFB9", id0: "7973a4cd2140c4c441893f0d1d2c637bcc64457e", id1: "d15a98ffb7e5b56c558d978508722deeca443c69"},
+    {name: "active/active-text", hex: "00FFAF", id0: "ea786ff4d6448b40328f44d3e87a6e166a9895ae", id1: "ce1dff17b563d008f1851ef4a815ce4aa9fb1d13"},
+    {name: "active/disable", hex: "00FFA5", id0: "f1325c8ce4ca823a94b3b5db5c67cca1de5a9f1e", id1: "cf0a45c3eb009df326c1acde47b2f6dfb195835c"},
+    {name: "text/text-main", hex: "00FF9B", id0: "1d80a3ddbd5fa3007edbffd14171d1b769463ed8", id1: "0efabdaf82d7e4b51ac0073199efc01e39fd9703"},
+    {name: "text/text-main", hex: "00FF91", id0: "1dbcf643f6cdc039868cb5bf639b208113e73e06", id1: "dfe593db230c719f6d111fd39bc24f1f4969bc60"},
+    {name: "text/text-main", hex: "00FF87", id0: "aa7cd08eca345c5a45ca28e53b7c49bd5004b1a7", id1: "40f853e9dce3ce27cfe707a85bf05c0b3c59d9c6"},
+    {name: "text/text-main", hex: "00FF7D", id0: "f7cd2931e99befae9ad54224bf6d65742a8f51d7", id1: "a649d04b0b6d08449c3c80e865599406e58bba62"},
+    {name: "icons/icons-main", hex: "00FF73", id0: "ac192dec0a85db904dab9e43207086e98711c400", id1: "1812aaedb878682a9e0a71148dac5b644e31ce47"},
+    {name: "icons/icons-add", hex: "00FF69", id0: "8d3519fb6659ad58efff84a3eb4dfaf00de5193d", id1: "36bbfafa15e22086ce46a06bed69509d7f0b4ecb"},
+    {name: "icons/icons-active", hex: "00FF5F", id0: "437782d785b34d9dc366d7aa7ea4f7e8eb30466b", id1: "a6fac1dc0092dfc080f4dd3972021fca2a88c55d"},
+    {name: "status/danger", hex: "00F5FF", id0: "4295d928aa69c541277181e7e55c8fd34c9843ba", id1: "5edf42ee182e425d58758296db0943f3bcbc435b"},
+    {name: "status/attention", hex: "00F5F5", id0: "dc6bf650509a7e126b79e9e022f5ef8798816e45", id1: "aafd647fc827153d25798f7226b67b9c388e2ae0"},
+    {name: "status/good", hex: "00F5EB", id0: "af418c5deaa74ba1797114c800215a83d91bfed5", id1: "8c0032282636e3477c4aae9335efdfcdf613aeff"},
+    {name: "status/empty", hex: "0AF5EB", id0: "0a50d13aff049fccd5ae03fce7fb35fd2aa63d3b", id1: "8a08ae602910ff4c25c1bac03b299698932d6939"}
+]
