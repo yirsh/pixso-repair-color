@@ -54,9 +54,6 @@ async function tokenRepair(checkObj) {
 
   const localCollections = await pixso.variables.getLocalVariablesAsync();
 
-  console.log(localCollections)
-
-
   const node = pixso.getNodeById(checkObj[0].id);
 
   const nodeTreeNotText = await node.findAllWithCriteria({types: ['COMPONENT', 'COMPONENT_SET', 'ELLIPSE', 'FRAME', 'GROUP', 'INSTANCE', 'VECTOR', 'RECTANGLE', 'POLYGON', 'LINE']});
