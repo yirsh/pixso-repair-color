@@ -2,54 +2,34 @@
 <script setup>
 import { ref } from "vue";
 
-const messageTheme = ref("Выберите<br>объект<br>для замены<br>темы");
 const messageToken = ref("Инфо");
 const messagePage = ref("Починить");
-const messageLocal = ref("Выгрузить");
+const  messageStatus = ref("Выберите объект и действие") //Select an object and action
 
 onmessage = (event) => {
 
   if(event.data.pluginMessage === "not-selection") {
-    messageTheme.value = "Объект<br>не выбран"
-  }
-
-  if(event.data.pluginMessage === "Dark-success") {
-    messageTheme.value = "Тёмная<br>активна"
-  }
-
-  if(event.data.pluginMessage === "Light-success") {
-    messageTheme.value = "Светлая<br>активна"
+    messageStatus.value = "Объект не выбран"; // No object selected
+    setTimeout(() => {
+      messageStatus.value = "Выберите объект и действие"; // Select an object and action
+    }, 1800);
   }
 
   if(event.data.pluginMessage === "ready-token") {
     messageToken.value = "Токены<br>починены";
   }
 
-  // if(event.data.pluginMessage === "ready-local") {
-  //   messageLocal.value = "Стили<br>готовы";
-  // }
+  if(event.data.pluginMessage.startsWith("** Object")) {
 
-  if(event.data.pluginMessage === "finish-local") {
-    messageLocal.value = "Стили<br>готовы";
+    messageStatus.value = "Скопировано в буфер"; // Copied to clipboard
+    copyToClipboard(event.data.pluginMessage);
+
+    setTimeout(() => {
+      messageStatus.value = "Выберите объект и действие"; // Select an object and action
+    }, 1800);
+
   }
 
-  if(event.data.pluginMessage.startsWith("** Local")) {
-
-    const fileContent = event.data.pluginMessage;
-    const blob = new Blob([fileContent], { type: 'text/css' });
-
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'style.txt';
-    a.textContent = 'Скачать файл';
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
 }
 
 const objinfo = () => {
@@ -66,9 +46,26 @@ const repair = () => {
   );
 };
 
-function updateMsg (target, text) {
-  target.value = text;
+
+async function copyToClipboard(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    const successful = document.execCommand("copy");
+    if (successful) {
+      // console.log("The text has been copied successfully.:", text);
+    } else {
+      // console.error("Failed to copy text");
+    }
+  } catch (error) {
+    // console.error("Error copying text:", error);
+  } finally {
+    document.body.removeChild(textarea);
+  }
 }
+
 
 
 </script>
@@ -78,7 +75,7 @@ function updateMsg (target, text) {
   <div class="block-wrap">
     <div class="block">
       <div class="operate">
-        <button class="kc-ui-btn" @click="objinfo">Object</button>
+        <button class="kc-ui-btn" @click="objinfo">Obj Info</button>
       </div>
       <div class="message-operate"><span v-html="messageToken"></span></div>
     </div>
@@ -88,6 +85,9 @@ function updateMsg (target, text) {
       </div>
       <div class="message-operate"><span v-html="messagePage"></span></div>
     </div>
+  </div>
+  <div class="block">
+    <div class="message-status"><span v-html="messageStatus"></span></div>
   </div>
 
 </template>
@@ -154,6 +154,18 @@ function updateMsg (target, text) {
   font-weight: normal;
   font-size: .9rem;
   color: #36373f;
+}
+
+.message-status {
+  display: block;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  width: 100%;
+  border-top: 1px solid #ccc ;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-size: .8rem;
+  color: #16171a;
 }
 
 .output-style {

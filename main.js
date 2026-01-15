@@ -3,12 +3,6 @@
 
 pixso.showUI(__html__);
 
-const allColor = pixso.getLocalPaintStyles();
-const allTextStyle = pixso.getLocalTextStyles();
-
-const timeStamp = Date.now();
-
-let colorMode;
 let selectToChange;
 
 import { colorLib } from './colorlib.js';
@@ -16,6 +10,10 @@ import { colorLib } from './colorlib.js';
 pixso.ui.onmessage = (msg) => {
 
   selectToChange = pixso.currentPage.selection;
+
+  if(selectToChange.length === 0 ) {
+    pixso.ui.postMessage("not-selection")
+  }
 
   if(selectToChange.length !== 0 && msg.type === "get-info") {
 
@@ -35,18 +33,27 @@ pixso.ui.onmessage = (msg) => {
 
 async function objInfo(checkObj) {
 
-  console.log(pixso.apiVersion)
-  console.log("+++")
-
   const node = pixso.getNodeById(checkObj[0].id);
 
-  console.log(checkObj)
-  console.log(node)
+  let nodeFills = "";
+  let nodeStrokes = "";
 
-  let nodeFills = node.fills[0].boundVariables.color.id;
-  nodeFills = nodeFills.split('/')[0];
+  // console.log(node)
 
-  console.log("nodeFills: " + nodeFills)
+  if (node.fills[0].hasOwnProperty('boundVariables')) {
+    nodeFills = node.fills[0].boundVariables.color.id;
+    nodeFills = "\nFills ID:\n " + nodeFills.split('/')[0];
+  }
+
+  if (node.strokes[0].hasOwnProperty('boundVariables')) {
+    nodeStrokes = node.strokes[0].boundVariables.color.id;
+    nodeStrokes = "\nStrokes ID:\n " + nodeStrokes.split('/')[0];
+  }
+
+  const objectInfo = "** Object Info" + nodeFills + nodeStrokes;
+
+  pixso.ui.postMessage(objectInfo)
+
 
 }
 
@@ -104,5 +111,7 @@ async function fixFillColor(nodeId, nodeColorId) {
 
   }
 }
+
+
 
 
