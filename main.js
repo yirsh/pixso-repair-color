@@ -43,7 +43,7 @@ pixso.ui.onmessage = (msg) => {
   if (msg.type === "repair-color") {
 
     if (colorLib.length === 0) {
-      pixso.ui.postMessage("not-library")
+        pixso.ui.postMessage("not-library")
       return
     }
     async function handletokenRepair() {
@@ -116,12 +116,12 @@ async function tokenRepair(checkObj) {
 
     if (node.fills[0]?.hasOwnProperty('boundVariables')) {
       const fillId = node.fills[0]?.boundVariables.color.id.split('/')[0];
-      fixFillColor(node.id, fillId);
+      await fixFillColor(node.id, fillId);
     }
 
     if (node.strokes[0]?.hasOwnProperty('boundVariables')) {
-      const strokesId = node.fills[0]?.boundVariables.color.id.split('/')[0];
-      fixStrokeColor(node.id, strokesId);
+      const strokesId = node.strokes[0]?.boundVariables.color.id.split('/')[0];
+      await fixStrokeColor(node.id, strokesId);
     }
 
     if (node.childrenCount > 0) {
@@ -148,6 +148,7 @@ async function tokenRepair(checkObj) {
       }
     }
   }
+  return true
 }
 
 async function fixFillColor(nodeId, nodeColorId) {
@@ -180,7 +181,7 @@ async function fixStrokeColor(nodeId, nodeColorId) {
 
     const strokesCopy = [...targetNode.strokes];
     if (strokesCopy[0].type === 'SOLID') {
-      strokesCopy[0] = pixso.variables.setBoundVariableForPaint(fillsCopy[0], 'color', bindVariable);
+      strokesCopy[0] = pixso.variables.setBoundVariableForPaint(strokesCopy[0], 'color', bindVariable);
     }
     targetNode.strokes = strokesCopy; // обновляем цвет строки ноды
   }
