@@ -3,3 +3,6 @@ dist/
 host.js
 package-lock.json
 package.json
+.idea/
+.gitignore
+.DS_Store

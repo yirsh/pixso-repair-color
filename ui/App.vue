@@ -3,24 +3,72 @@
 import { ref } from "vue";
 
 const messageToken = ref("Инфо");
-const messagePage = ref("Починить");
+const messageInst = ref("Инстансы");
+const messageColor = ref("Цвета");
+const messageCreate = ref("Экспорт");
+const messageGet = ref("Импорт");
 const  messageStatus = ref("Выберите объект и действие") //Select an object and action
+const  messageLibStatus = ref("Бибилиотеки не сопоставлены") //
 
 onmessage = (event) => {
 
   if(event.data.pluginMessage === "not-selection") {
+    loaderStatusChange();
     messageStatus.value = "Объект не выбран"; // No object selected
     setTimeout(() => {
       messageStatus.value = "Выберите объект и действие"; // Select an object and action
     }, 1800);
   }
 
-  if(event.data.pluginMessage === "ready-token") {
-    messageToken.value = "Токены<br>починены";
+  if(event.data.pluginMessage === "lib-created") {
+    loaderStatusChange();
+    messageStatus.value = "Создана библиотека цветов для экспорта"; // No object selected
+    setTimeout(() => {
+      messageStatus.value = "Выберите объект и действие"; // Select an object and action
+    }, 2800);
   }
 
-  if(event.data.pluginMessage.startsWith("** Object")) {
+  if(event.data.pluginMessage === "lib-not-found") {
+    loaderStatusChange();
+    messageStatus.value = "Не найдена страница ExportLib<br>или не поключена библиотека"; // Page w/color teamLibrary not found
+    setTimeout(() => {
+      messageStatus.value = "Выберите объект и действие"; // Select an object and action
+    }, 2800);
+  }
 
+  if(event.data.pluginMessage === "lib-not-plug") {
+    loaderStatusChange();
+    messageStatus.value = "Не подключена библиотека команды"; // TeamLibrary not found
+    setTimeout(() => {
+      messageStatus.value = "Выберите объект и действие"; // Select an object and action
+    }, 2800);
+  }
+
+  if(event.data.pluginMessage === "lib-ready") {
+    messageLibStatus.value = "Библиотеки сопоставлены"; // teamLibrary ready to repair
+    const el = document.getElementById("lib-status");
+    el.classList.add("ready");
+    loaderStatusChange();
+  }
+
+  if(event.data.pluginMessage === "not-library") {
+    loaderStatusChange();
+    messageLibStatus.value = "Cопоставьте библиотеки"; // teamLibrary not ready to repair
+    setTimeout(() => {
+      messageLibStatus.value = "Бибилиотеки не сопоставлены"; // Select an object and action
+    }, 2800);
+  }
+
+  if(event.data.pluginMessage === "repaired") {
+    loaderStatusChange();
+    messageStatus.value = "Токены починены";
+    setTimeout(() => {
+      messageStatus.value = "Выберите объект и действие"; // Select an object and action
+    }, 2400);
+  }
+
+  if(event.data.pluginMessage.startsWith("*** Object")) {
+    loaderStatusChange();
     messageStatus.value = "Скопировано в буфер"; // Copied to clipboard
     copyToClipboard(event.data.pluginMessage);
 
@@ -33,15 +81,41 @@ onmessage = (event) => {
 }
 
 const objinfo = () => {
+  loaderStatusChange();
   parent.postMessage(
       { pluginMessage: { type: "get-info" } },
       "*"
   );
 };
 
-const repair = () => {
+const repairColor = () => {
+  loaderStatusChange();
   parent.postMessage(
-      { pluginMessage: { type: "repair-obj" } },
+      { pluginMessage: { type: "repair-color" } },
+      "*"
+  );
+};
+
+const repairInst = () => {
+  loaderStatusChange();
+  parent.postMessage(
+      { pluginMessage: { type: "repair-inst" } },
+      "*"
+  );
+};
+
+const createlib = () => {
+  loaderStatusChange();
+  parent.postMessage(
+      { pluginMessage: { type: "create-lib" } },
+      "*"
+  );
+};
+
+  const getlib = () => {
+  loaderStatusChange()
+  parent.postMessage(
+      { pluginMessage: { type: "get-lib" } },
       "*"
   );
 };
@@ -66,6 +140,13 @@ async function copyToClipboard(text) {
   }
 }
 
+function loaderStatusChange(){
+
+  const el = document.getElementById("loader");
+  el.classList.toggle("stop");
+
+}
+
 
 
 </script>
@@ -75,20 +156,44 @@ async function copyToClipboard(text) {
   <div class="block-wrap">
     <div class="block">
       <div class="operate">
+        <button class="kc-ui-btn" @click="repairInst">Repair Inst</button>
+      </div>
+      <div class="message-operate"><span v-html="messageInst"></span></div>
+    </div>
+    <div class="block">
+      <div class="operate">
+        <button class="kc-ui-btn" @click="repairColor">Repair Color</button>
+      </div>
+      <div class="message-operate"><span v-html="messageColor"></span></div>
+    </div>
+    <div class="block">
+      <div class="operate">
+        <button class="kc-ui-btn" @click="createlib">Create Lib</button>
+      </div>
+      <div class="message-operate"><span v-html="messageCreate"></span></div>
+    </div>
+    <div class="block">
+      <div class="operate">
+        <button class="kc-ui-btn" @click="getlib">Get Repair Lib</button>
+      </div>
+      <div class="message-operate"><span v-html="messageGet"></span></div>
+    </div>
+    <div class="block">
+      <div class="operate">
         <button class="kc-ui-btn" @click="objinfo">Obj Info</button>
       </div>
       <div class="message-operate"><span v-html="messageToken"></span></div>
     </div>
-    <div class="block">
-      <div class="operate">
-        <button class="kc-ui-btn" @click="repair">Repair</button>
-      </div>
-      <div class="message-operate"><span v-html="messagePage"></span></div>
-    </div>
+  </div>
+  <div class="block">
+    <div id="lib-status" class="message-lib-status"><span v-html="messageLibStatus"></span></div>
   </div>
   <div class="block">
     <div class="message-status"><span v-html="messageStatus"></span></div>
+  </div>  <div class="block">
+  <div id="loader" class="status-loader stop"><span class="status-loader-fill"></span></div>
   </div>
+
 
 </template>
 
@@ -114,7 +219,7 @@ async function copyToClipboard(text) {
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  width: 10rem;
+  width: 12rem;
   padding-right: 1rem;
   border-right: 1px solid #b1b4cc;
 }
@@ -131,6 +236,7 @@ async function copyToClipboard(text) {
   border-radius: 1rem;
   box-shadow: 0 0 20px #eee;
   transition: .2s  ease-out;
+  /*text-align: left;*/
 }
 
 .kc-ui-btn:hover {
@@ -148,8 +254,9 @@ async function copyToClipboard(text) {
 }
 
 .message-operate {
+  /*display: none;*/
   display: block;
-  width: 10rem;
+  width: 8rem;
   font-family: sans-serif;
   font-weight: normal;
   font-size: .9rem;
@@ -159,17 +266,66 @@ async function copyToClipboard(text) {
 .message-status {
   display: block;
   margin-top: 1rem;
-  padding-top: 1rem;
+  padding: .5rem;
   width: 100%;
-  border-top: 1px solid #ccc ;
   font-family: sans-serif;
   font-weight: normal;
   font-size: .8rem;
   color: #16171a;
 }
 
+.message-lib-status {
+  display: block;
+  margin-top: 1.5rem;
+  padding: .5rem .75rem;
+  width: 100%;
+  background: #e1e1e1;
+  border-radius: 1rem;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-size: .8rem;
+  letter-spacing: .02rem;
+  color: #16171a;
+}
+
+.ready {
+  background: #d4ffd4;
+}
+
 .output-style {
   white-space: pre;
+}
+
+.status-loader {
+  display: block;
+  position: relative;
+  margin-top: .5rem;
+  height: .5rem;
+  width: 100%;
+  background: #f5f5f5;
+}
+
+.status-loader.stop{
+  display:none;
+}
+
+.status-loader-fill {
+  position: absolute;
+  top:0;
+  left: 0;
+  display: inline-block;
+  height: .5rem;
+  width: 0;
+  background: #1873F2;
+  animation-name: loaderAnimation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes loaderAnimation {
+  from {width: 0;}
+  to {width: 100%;}
 }
 
 </style>
